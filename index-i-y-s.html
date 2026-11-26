@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingeniería y Sociedad — Cátedra II | Guía integral de examen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            paper: {
+              light: '#FAF8F5',
+              card: '#FFFFFF',
+              warm: '#F3EFEA',
+              dark: '#141312',
+              darkCard: '#1C1A18',
+              darkWarm: '#24211E'
+            },
+            ink: {
+              primary: '#1C1917',
+              secondary: '#44403C',
+              muted: '#57534E'
+            },
+            terracotta: {
+              DEFAULT: '#9A3412',
+              light: '#FFF7ED',
+              border: '#FDBA74'
+            },
+            slateblue: {
+              DEFAULT: '#1E3A5F',
+              light: '#EFF6FF',
+              border: '#93C5FD'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-editorial {
+      animation: fadeSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .drop-cap::first-letter {
+      float: left;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 3.5rem;
+      line-height: 0.85;
+      padding-top: 4px;
+      padding-right: 12px;
+      padding-left: 2px;
+      font-weight: 600;
+      color: #9A3412;
+    }
+    .dark .drop-cap::first-letter {
+      color: #FB923C;
+    }
+  </style>
+</head>
+<body class="bg-paper-light text-ink-primary dark:bg-paper-dark dark:text-stone-100 font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col">
+
+  <!-- Cabecera editorial superior -->
+  <header class="sticky top-0 z-40 bg-paper-light/95 dark:bg-paper-dark/95 backdrop-blur-md border-b border-stone-300/80 dark:border-stone-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8">
+      <!-- Cinta superior de edición académica -->
+      <div class="flex flex-wrap items-center justify-between py-3 border-b border-stone-200 dark:border-stone-800/80 gap-3">
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-base font-medium text-terracotta dark:text-orange-400">
+            Cátedra II • Directora: Milena Ramallo
+          </span>
+          <span class="hidden md:inline text-stone-400">|</span>
+          <span class="hidden md:inline font-serif italic text-base text-stone-600 dark:text-stone-400">
+            Ciencia, tecnología y sociedad en interacción
+          </span>
+        </div>
+        <button id="themeToggle" aria-label="Alternar modo de lectura" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard hover:border-terracotta dark:hover:border-orange-400 text-base font-medium text-stone-700 dark:text-stone-200 transition">
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-orange-400"></i>
+          <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-slateblue"></i>
+          <span>Modo lectura</span>
+        </button>
+      </div>
+
+      <!-- Título de cabecera y navegación principal -->
+      <div class="py-4 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+        <div>
+          <h1 class="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-50">
+            Ingeniería y Sociedad
+          </h1>
+          <p class="text-base text-stone-600 dark:text-stone-400 mt-0.5">
+            Cuaderno interactivo de estudio y preparación para el primer parcial
+          </p>
+        </div>
+
+        <nav class="flex flex-wrap gap-1.5 sm:gap-2" aria-label="Secciones principales">
+          <button onclick="switchTab('lectura')" id="tab-lectura" class="nav-tab inline-flex items-center gap-2 px-4 py-2 rounded-lg text-base font-medium transition-all">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Lectura guiada</span>
+          </button>
+          <button onclick="switchTab('autores')" id="tab-autores" class="nav-tab inline-flex items-center gap-2 px-4 py-2 rounded-lg text-base font-medium transition-all">
+            <i data-lucide="quote" class="w-4 h-4"></i>
+            <span>Voces y citas</span>
+          </button>
+          <button onclick="switchTab('flashcards')" id="tab-flashcards" class="nav-tab inline-flex items-center gap-2 px-4 py-2 rounded-lg text-base font-medium transition-all">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>Tarjetas de estudio</span>
+          </button>
+          <button onclick="switchTab('simulacro')" id="tab-simulacro" class="nav-tab inline-flex items-center gap-2 px-4 py-2 rounded-lg text-base font-medium transition-all">
+            <i data-lucide="pen-tool" class="w-4 h-4"></i>
+            <span>Simulacro de examen</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cuerpo principal -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
+
+    <!-- =====================================================================
+         SECCIÓN 1: LECTURA GUIADA POR BLOQUES (4 BLOQUES EDITORIALES)
+    ====================================================================== -->
+    <section id="view-lectura" class="tab-view animate-editorial space-y-12">
+
+      <!-- Portada del ensayo interactivo -->
+      <div class="border-y-2 border-stone-900 dark:border-stone-200 py-8 sm:py-10 space-y-5">
+        <div class="flex flex-wrap items-center gap-3 font-mono text-base text-slateblue dark:text-blue-300">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+          <span>Programa integrado • Apuntes de Gustavo Carlos Bitocchi y Milena Ramallo / Élida Repetto</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 dark:text-white leading-tight max-w-4xl">
+          De la pregunta epistemológica a los paradigmas tecno-económicos contemporáneos
+        </h2>
+        <p class="text-base text-stone-700 dark:text-stone-300 max-w-3xl leading-relaxed">
+          Estudiar la trilogía <strong>Ciencia, Tecnología y Sociedad (CTS)</strong> exige comprender cada pieza sin perder de vista cómo se entrelazan en la historia y en la práctica de la ingeniería. A continuación, recorremos los cuatro núcleos temáticos del examen con citas textuales, casos reales, cuadros comparativos y alertas conceptuales diseñadas para evitar las trampas habituales del parcial.
+        </p>
+
+        <!-- Selector de navegación por bloque -->
+        <div class="pt-3 flex flex-wrap gap-2.5">
+          <button onclick="filterBlock('all', this)" class="block-nav-btn px-4 py-2 rounded-lg text-base font-semibold bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 transition">
+            Todos los bloques
+          </button>
+          <button onclick="filterBlock('b1', this)" class="block-nav-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 hover:border-terracotta transition">
+            I. Ciencia y método
+          </button>
+          <button onclick="filterBlock('b2', this)" class="block-nav-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 hover:border-terracotta transition">
+            II. Origen y sociedad
+          </button>
+          <button onclick="filterBlock('b3', this)" class="block-nav-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 hover:border-terracotta transition">
+            III. Técnica y tecnología
+          </button>
+          <button onclick="filterBlock('b4', this)" class="block-nav-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 hover:border-terracotta transition">
+            IV. Cambio e innovación
+          </button>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           BLOQUE I
+      ==================================================================== -->
+      <article data-block="b1" class="study-block bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-200/90 dark:border-stone-800 p-6 sm:p-10 shadow-sm space-y-8">
+        <header class="border-b border-stone-200 dark:border-stone-800 pb-6 space-y-2">
+          <p class="font-mono text-base text-terracotta dark:text-orange-400">
+            Bloque I • Gustavo Carlos Bitocchi — Ciencia: noción, origen, paradigmas y encuadre social
+          </p>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white leading-snug">
+            El conocimiento, la ciencia moderna y el método científico
+          </h3>
+        </header>
+
+        <div class="space-y-6 text-base text-stone-800 dark:text-stone-200 leading-relaxed max-w-4xl">
+          <p class="drop-cap">
+            Antes de describir qué hace la ciencia, conviene preguntarnos qué disciplina se detiene a examinarla. Esa tarea corresponde a la <strong>Epistemología</strong> —también llamada filosofía o metodología de las ciencias—, cuyo nombre proviene de dos voces griegas: <em>episteme</em> (detenerse a pensar ante un hecho asombroso) y <em>logía</em> (estudio o tratado). Su <strong>objeto de estudio</strong> es dilucidar qué es la realidad científica y cómo opera su método, mientras que su <strong>sujeto</strong> es quien investiga. Durante siglos, la historia de la ciencia reservó el papel de sujeto activo exclusivamente al varón, relegando a la mujer a mero objeto de estudio; una asimetría denunciada por la <strong>epistemología feminista</strong>, representada por la filósofa norteamericana <strong>Sandra Harding</strong>, quien reivindica a la mujer como sujeto epistémico en igualdad de condiciones.
+          </p>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Del saber cotidiano a la ciencia moderna de Mario Bunge y Alicia Gianella
+            </h4>
+            <p>
+              Todo ser humano posee un <strong>conocimiento natural</strong> (también llamado vulgar o precientífico): es espontáneo, informal, práctico y suficiente para resolver la vida cotidiana, aunque no busca explicar las causas profundas de los fenómenos. La ciencia da ese paso adicional. En un <strong>sentido amplio</strong>, solemos definirla como un <em>«conjunto de conocimientos metódicamente adquiridos y sistemáticamente organizados»</em>, pero esa fórmula resulta insuficiente porque no especifica qué método emplea ni si sus verdades son definitivas.
+            </p>
+            <p>
+              Para caracterizar la <strong>ciencia moderna</strong>, Bitocchi adopta la definición clásica del epistemólogo argentino <strong>Mario Bunge</strong>, quien afirma que <em>«la ciencia es un conocimiento racional (o lógico), sistemático, exacto, verificable y por consiguiente falible»</em>. En su obra <em>La ciencia, su método y su filosofía</em> (1982), Bunge retrata esta empresa intelectual con una imagen memorable:
+            </p>
+
+            <blockquote class="my-6 pl-6 pr-4 py-4 border-l-4 border-terracotta bg-paper-warm dark:bg-paper-darkWarm rounded-r-xl font-serif italic text-base text-stone-800 dark:text-stone-200">
+              «Mientras los animales inferiores sólo están en el mundo, el hombre trata de entenderlo; y sobre la base de su inteligencia imperfecta pero perfectible del mundo, el hombre intenta enseñorearse de él para hacerlo más confortable. En este proceso, construye un mundo artificial: ese creciente cuerpo de ideas llamado "ciencia" (...). Un mundo le es dado al hombre, su gloria no es soportar o despreciar este mundo, sino enriquecerlo construyendo otros universos.»
+              <footer class="not-italic font-sans text-base font-medium text-stone-600 dark:text-stone-400 mt-2">
+                — Mario Bunge, <em>La ciencia, su método y su filosofía</em> (1982, p. 9)
+              </footer>
+            </blockquote>
+
+            <p>
+              Cada rasgo de Bunge encierra una precisión decisiva: conocer es explicar (sacar a la luz lo oculto entre los pliegues de un fenómeno); es <strong>racional</strong> porque razona lógicamente sin contradicciones; es <strong>sistemática</strong> porque sus teorías están interrelacionadas y ordenadas de forma <em>provisional</em>; es <strong>exacta</strong> no por usar matemática, sino en sentido <em>semántico</em> (lenguaje claro y preciso, libre de ambigüedad y vaguedad); es <strong>verificable</strong> porque confronta sus conjeturas con la experiencia mediante instrumentos; y es <strong>falible</strong> precisamente porque depende de esa verificación empírica: sus verdades no son absolutas sino <em>contingentes</em> y siempre refutables.
+            </p>
+            <p>
+              Junto a Bunge, el apunte incorpora la mirada de la epistemóloga argentina <strong>Alicia Gianella</strong> (1995), quien sostiene que la ciencia <em>«es un conocimiento racional y saber crítico, es sistemático, es preciso usando un lenguaje técnico, tiene un carácter metódico, formula leyes generales y acepta supuestos»</em>.
+            </p>
+
+            <!-- ADVERTENCIA INTERACTIVA CON TAMAÑO DE LETRA UNIFORME (1rem / text-base) -->
+            <div class="my-6 rounded-xl border-2 border-terracotta/40 bg-terracotta-light/70 dark:bg-orange-950/25 dark:border-orange-700/50 p-5 space-y-4">
+              <div class="flex items-start gap-3">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-terracotta dark:text-orange-400 shrink-0 mt-1"></i>
+                <div class="space-y-2 text-base text-stone-800 dark:text-stone-200">
+                  <p>
+                    <strong>Atención para el examen:</strong> No estudies a Mario Bunge y a Alicia Gianella como dos listas aisladas. En los enunciados de opción múltiple, la cátedra suele combinar rasgos de ambos autores para evaluar si comprendés qué define a la ciencia moderna.
+                  </p>
+                  <button onclick="toggleGianellaPanel()" id="btnGianellaToggle" aria-expanded="false" class="inline-flex items-center gap-2 text-base font-semibold text-terracotta dark:text-orange-400 underline decoration-2 underline-offset-4 hover:text-stone-900 dark:hover:text-white transition text-left">
+                    <span>¿Por qué conviene conectar a Alicia Gianella con Mario Bunge en el parcial? Explorar la articulación conceptual</span>
+                    <i data-lucide="arrow-down-right" id="iconGianellaArrow" class="w-5 h-5 shrink-0 transition-transform duration-200"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Panel desplegable con la explicación profunda y la conexión explícita -->
+              <div id="gianellaConnectionPanel" class="hidden pt-4 border-t border-terracotta/25 dark:border-orange-800/50 space-y-4 text-base text-stone-800 dark:text-stone-200 leading-relaxed">
+                <p>
+                  <strong>¿Por qué es estratégico conectar ambas definiciones antes de rendir?</strong> Porque si memorizás únicamente las cinco palabras de Bunge (<em>racional, sistemática, exacta, verificable, falible</em>) y en el examen aparece una opción que afirma que el conocimiento científico <em>«constituye un saber crítico que emplea un lenguaje técnico y formula leyes generales»</em>, podrías creer erróneamente que es un distractor y dejarla sin marcar, perdiendo puntos valiosos. Ambos epistemólogos describen el mismo fenómeno desde ángulos complementarios.
+                </p>
+                <p>
+                  <strong>Cómo se articulan sus ideas en tres puentes conceptuales:</strong>
+                </p>
+                <ul class="space-y-3 pl-5 list-disc marker:text-terracotta">
+                  <li>
+                    <strong>El «saber crítico» de Gianella dialoga con el carácter «racional y falible» de Bunge:</strong> Decir que la ciencia es un saber crítico significa que no acepta dogmas ni verdades por mera autoridad; cuestiona sus propios fundamentos. Esa actitud crítica es el motor que hace que el científico razone con rigor lógico (racionalidad) y esté dispuesto a abandonar una teoría cuando la evidencia la refuta (falibilidad).
+                  </li>
+                  <li>
+                    <strong>El «lenguaje técnico preciso» de Gianella especifica lo que Bunge denomina «exactitud semántica»:</strong> Cuando Bunge aclara que la ciencia es exacta en el plano del significado para evitar la ambigüedad y la vaguedad del lenguaje vulgar, Gianella muestra cómo se logra eso en la práctica: construyendo un vocabulario técnico especializado (por ejemplo, en física o ingeniería, distinguir con precisión entre <em>masa</em> y <em>peso</em>, o entre <em>calor</em> y <em>temperatura</em>).
+                  </li>
+                  <li>
+                    <strong>La «formulación de leyes generales» y la «aceptación de supuestos» de Gianella completan la «sistematicidad y verificación» de Bunge:</strong> La ciencia no colecciona datos sueltos; parte de supuestos teóricos previos (el <em>background</em>) para formular leyes universales capaces de explicar múltiples casos particulares (como la ley de gravitación universal o las leyes de la termodinámica), integrándolas en un sistema coherente que luego se contrasta empíricamente.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Clasificación de las ciencias y auxiliariedad de las ciencias formales
+            </h4>
+            <p>
+              Las ciencias se dividen en <strong>formales</strong> y <strong>fácticas</strong> según cuatro criterios fundamentales: su objeto de estudio, el método que utilizan, el tipo de proposiciones que formulan y el modo en que demuestran sus verdades. A su vez, las ciencias formales cumplen una función de <strong>auxiliariedad</strong>: prestan su rigor lógico y matemático a las ciencias fácticas para poder deducir conclusiones válidas a partir de una hipótesis. Es importante recordar también que una <em>antigua clasificación</em> agrupaba a las actuales ciencias formales junto con las fácticas naturales bajo el nombre de «ciencias exactas», dejando a las ciencias sociales como «humanidades».
+            </p>
+
+            <!-- Tabla editorial comparativa -->
+            <div class="my-6 overflow-x-auto rounded-xl border border-stone-300 dark:border-stone-700">
+              <table class="w-full text-left border-collapse text-base">
+                <thead>
+                  <tr class="bg-paper-warm dark:bg-paper-darkWarm border-b border-stone-300 dark:border-stone-700">
+                    <th class="p-4 font-serif font-bold text-stone-900 dark:text-white">Criterio</th>
+                    <th class="p-4 font-serif font-bold text-slateblue dark:text-blue-300">Ciencias formales (Lógica y Matemática)</th>
+                    <th class="p-4 font-serif font-bold text-terracotta dark:text-orange-400">Ciencias fácticas (Naturales y Sociales)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-paper-darkCard">
+                  <tr>
+                    <td class="p-4 font-semibold">Objeto de estudio</td>
+                    <td class="p-4">Entes ideales (fuera de espacio y tiempo, creados por abstracción mental).</td>
+                    <td class="p-4">Hechos (<em>factum</em>) o fenómenos concretos situados en espacio y tiempo.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Método</td>
+                    <td class="p-4">Método axiomático-deductivo (parte de axiomas evidentes para deducir teoremas).</td>
+                    <td class="p-4">Método hipotético-deductivo (parte de hipótesis no evidentes que exigen contraste).</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Tipo de proposición</td>
+                    <td class="p-4">Analítica (no agrega información empírica nueva sobre el mundo).</td>
+                    <td class="p-4">Sintética (agrega información nueva sobre la realidad que debe verificarse).</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Demostración</td>
+                    <td class="p-4">Argumentación racional: completa y definitiva.</td>
+                    <td class="p-4">Prueba empírica (observación/experimentación): incompleta y provisional.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              El método hipotético-deductivo y sus dos contextos
+            </h4>
+            <p>
+              Tanto las ciencias fácticas naturales («duras», como la Física o la Química) como las sociales («blandas», como la Economía o la Sociología) abordan los hechos mediante el <strong>método hipotético-deductivo</strong>, estructurado en dos grandes contextos:
+            </p>
+            <p>
+              El primero es el <strong>contexto de descubrimiento</strong>, un ámbito <em>dinámico</em> donde inciden factores psicológicos, culturales, políticos, filosóficos y la creatividad del investigador. Allí se formula el <strong>problema</strong> (una pregunta ante un hecho que requiere explicación), se propone una <strong>hipótesis</strong> (una respuesta provisoria de carácter <em>universal/general</em> y <em>sintético</em>) y todo ello se elabora desde un <strong>marco teórico</strong> o <em>background</em> previo.
+            </p>
+            <p>
+              El segundo es el <strong>contexto de justificación</strong>, de carácter <em>estático</em> y estrictamente lógico-experimental. Como una hipótesis universal no puede observarse directamente en todos sus casos infinitos, se deducen de ella <strong>consecuencias contrastables</strong> (proposiciones singulares concretas) que se confrontan con la experiencia. De esa contrastación surgen dos desenlaces posibles: la <strong>justificación (corroboración)</strong> provisional de la hipótesis, o su <strong>falsación (refutación)</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Síntesis integradora de cierre -->
+        <aside class="rounded-xl bg-paper-warm dark:bg-paper-darkWarm border border-stone-300 dark:border-stone-700 p-6 space-y-3 text-base">
+          <div class="flex items-center gap-2 font-serif text-lg font-bold text-stone-900 dark:text-white">
+            <i data-lucide="bookmark-check" class="w-5 h-5 text-terracotta dark:text-orange-400"></i>
+            <span>Síntesis integradora del Bloque I</span>
+          </div>
+          <p class="text-stone-700 dark:text-stone-300 leading-relaxed">
+            La Epistemología analiza el conocimiento científico, reivindicando hoy tanto al varón como a la mujer como sujetos de la ciencia (Sandra Harding). Superando el saber natural espontáneo, la ciencia moderna se define como un conocimiento racional, sistemático, semánticamente exacto, verificable y falible (Mario Bunge), que constituye un saber crítico con lenguaje técnico capaz de formular leyes generales desde supuestos teóricos (Alicia Gianella). Mientras las ciencias formales demuestran enunciados analíticos sobre entes ideales mediante el método axiomático-deductivo y asisten a las demás disciplinas (auxiliariedad), las ciencias fácticas estudian hechos reales mediante el método hipotético-deductivo, articulando un contexto de descubrimiento dinámico (problema, hipótesis universal sintética y marco teórico) con un contexto de justificación estático (deducción de consecuencias contrastables singulares para corroborar o falsar).
+          </p>
+        </aside>
+      </article>
+
+      <!-- ===================================================================
+           BLOQUE II
+      ==================================================================== -->
+      <article data-block="b2" class="study-block bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-200/90 dark:border-stone-800 p-6 sm:p-10 shadow-sm space-y-8">
+        <header class="border-b border-stone-200 dark:border-stone-800 pb-6 space-y-2">
+          <p class="font-mono text-base text-slateblue dark:text-blue-300">
+            Bloque II • Gustavo Carlos Bitocchi — Surgimiento histórico y estructura social
+          </p>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white leading-snug">
+            El origen de la ciencia moderna y su encuadre social
+          </h3>
+        </header>
+
+        <div class="space-y-6 text-base text-stone-800 dark:text-stone-200 leading-relaxed max-w-4xl">
+          <p class="drop-cap">
+            Comprender cómo pensamos hoy la ciencia exige situarla históricamente. La historiografía tradicional divide el tiempo en cuatro edades desde una óptica eurocéntrica y cristocéntrica: en la <strong>Edad Antigua</strong> (siglo VIII a.C. al 476 d.C.), los griegos separaron la razón del mito y fundaron la <em>ciencia antigua o clásica</em>, un saber especulativo centrado en la demostración argumentativa y la inducción; durante la <strong>Edad Media</strong> (476-1453), el saber quedó entramado con la fe cristiana en un período de claroscuros que vio nacer las grandes universidades europeas (Bolonia, Oxford, París); tras el impulso renovador del <strong>Humanismo</strong> y el <strong>Renacimiento</strong> (siglos XV y XVI), hacia <strong>1610</strong> irrumpe la <strong>Revolución Científica</strong> en plena <strong>Edad Moderna</strong>, dando origen a la <em>ciencia moderna</em> con Galileo Galilei, legado que continúa en la <strong>Edad Contemporánea</strong> (desde 1789, con el debate sobre la Posmodernidad a partir de 1945 o 1969).
+          </p>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Del geocentrismo al heliocentrismo y el universo infinito de Giordano Bruno
+            </h4>
+            <p>
+              El cambio de mentalidad se expresó con dramatismo en la cosmología. El modelo <strong>geocéntrico</strong> (Aristóteles y Ptolomeo) situaba a la Tierra inmóvil en el centro de un universo <strong>finito</strong> rodeado de esferas cristalinas perfectas, más allá de las cuales se ubicaba el <em>Cielo Empíreo</em> (morada de Dios y los elegidos). En 1543, <strong>Nicolás Copérnico</strong> publicó su teoría <strong>heliocéntrica</strong> (ya intuida en la Antigüedad por Aristarco de Samos), colocando al Sol inmóvil en el centro. Sin embargo, Copérnico <strong>conservó la finitud del universo</strong> y las órbitas circulares, manteniendo así la compatibilidad con el Cielo Empíreo. Fue <strong>Giordano Bruno</strong> quien en 1584 postuló un <strong>universo infinito y sin centro</strong> con múltiples sistemas planetarios; al desvanecerse el Cielo Empíreo literal, fue condenado por la Inquisición y quemado en Roma en 1600. Posteriormente, Kepler descubriría las órbitas elípticas y Galileo demostraría con su telescopio que los cuerpos celestes poseen imperfecciones.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              La nueva ciencia y el diálogo experimental de Galileo Galilei
+            </h4>
+            <p>
+              Los epistemólogos Ilya Prigogine e Isabelle Stengers denominan a esta nueva ciencia moderna como el <strong>diálogo experimental</strong>, sustentado en dos columnas inseparables: la <strong>matematización de la naturaleza</strong> y la <strong>experimentación continua</strong>.
+            </p>
+
+            <blockquote class="my-6 pl-6 pr-4 py-4 border-l-4 border-slateblue bg-paper-warm dark:bg-paper-darkWarm rounded-r-xl font-serif italic text-base text-stone-800 dark:text-stone-200">
+              «La filosofía [el universo] está escrita en ese libro enorme que tenemos continuamente abierto delante de nuestros ojos (hablo del universo), pero que no puede entenderse si no aprendemos primero a comprender la lengua y a conocer los caracteres con que se ha escrito. Está escrito en lengua matemática, y los caracteres son triángulos, círculos y otras figuras geométricas sin los cuales es humanamente imposible entender una palabra; sin ellos se deambula en vano por un laberinto oscuro.»
+              <footer class="not-italic font-sans text-base font-medium text-stone-600 dark:text-stone-400 mt-2">
+                — Galileo Galilei, <em>El ensayador (Saggiatore)</em>, #6
+              </footer>
+            </blockquote>
+
+            <p>
+              Matematizar la naturaleza significa asumir que todo fenómeno físico es <em>mensurable</em> (medible y cuantificable) para poder controlarlo objetivamente. A su vez, esa cuantificación exige una <strong>experimentación continua</strong> —tanto a partir de <em>experiencias</em> espontáneas como de <em>experimentos</em> provocados en laboratorio con instrumentos cada vez más nobles y precisos—, lo que vuelve provisionales todas las conclusiones científicas.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Comunidad científica, justicia social y ciencia colectivizada
+            </h4>
+            <p>
+              Como demostró el físico y epistemólogo <strong>Thomas Kuhn</strong> (1922-1996), la ciencia es una práctica social organizada en <strong>comunidades científicas</strong> que comparten un <strong>paradigma</strong> (realizaciones científicas universalmente reconocidas que proveen modelos de problemas y soluciones). Porque esas comunidades actúan dentro de una sociedad, el conocimiento científico <strong>no es neutro ni indiferente</strong>.
+            </p>
+            <p>
+              El filósofo mexicano <strong>León Olivé</strong> lo ilustra con un caso concreto: un campesino de la sierra de Oaxaca que cultiva, sin saberlo, <strong>maíz transgénico</strong> (un artefacto biotecnológico) queda atrapado en una relación de dependencia económica y cultural frente a quienes poseen el conocimiento científico. Por ello, Olivé sostiene que los Estados deben orientar la investigación bajo principios de <strong>justicia social</strong>, garantizando a todos los ciudadanos dos condiciones simultáneas: poder satisfacer sus necesidades básicas y ver respetados sus valores y formas de vida.
+            </p>
+            <p>
+              Finalmente, en el mundo contemporáneo se ha vuelto difusa la frontera tradicional entre la <em>ciencia académica (pura o básica)</em> —orientada al saber como valor intrínseco en universidades— y la <em>ciencia industrial (o aplicada)</em>. Como advierte John Ziman, vivimos en una <strong>ciencia colectivizada</strong> que unifica fines teóricos y prácticos, y donde, en palabras de Olivé, se produce una <strong>imbricación</strong> nunca vista entre ciencia y tecnología: ambas se entrelazan como las tejas acanaladas de un techo para canalizar las demandas sociales.
+            </p>
+          </div>
+        </div>
+
+        <!-- Síntesis integradora de cierre -->
+        <aside class="rounded-xl bg-paper-warm dark:bg-paper-darkWarm border border-stone-300 dark:border-stone-700 p-6 space-y-3 text-base">
+          <div class="flex items-center gap-2 font-serif text-lg font-bold text-stone-900 dark:text-white">
+            <i data-lucide="bookmark-check" class="w-5 h-5 text-slateblue dark:text-blue-300"></i>
+            <span>Síntesis integradora del Bloque II</span>
+          </div>
+          <p class="text-stone-700 dark:text-stone-300 leading-relaxed">
+            La ciencia moderna nace con la Revolución Científica de 1610 tras el paso del geocentrismo finito al heliocentrismo (Copérnico) y la apertura al universo infinito (Giordano Bruno). Galileo inaugura el diálogo experimental combinando la matematización de lo mensurable con la experimentación continua mediante instrumentos. Lejos de ser una actividad aislada o neutra, la ciencia es obra de comunidades que operan bajo paradigmas (Kuhn) e impactan profundamente en la vida social, exigiendo políticas guiadas por la justicia social (Olivé, caso Oaxaca). En la actualidad, la ciencia colectivizada (Ziman) borra la división estricta entre investigación básica y aplicada, consolidando una estrecha imbricación con la tecnología.
+          </p>
+        </aside>
+      </article>
+
+      <!-- ===================================================================
+           BLOQUE III
+      ==================================================================== -->
+      <article data-block="b3" class="study-block bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-200/90 dark:border-stone-800 p-6 sm:p-10 shadow-sm space-y-8">
+        <header class="border-b border-stone-200 dark:border-stone-800 pb-6 space-y-2">
+          <p class="font-mono text-base text-terracotta dark:text-orange-400">
+            Bloque III • Milena Ramallo y Élida Repetto — Ciencia y tecnología en interacción
+          </p>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white leading-snug">
+            Técnica, tecnología, clasificaciones y el método tecnológico
+          </h3>
+        </header>
+
+        <div class="space-y-6 text-base text-stone-800 dark:text-stone-200 leading-relaxed max-w-4xl">
+          <p class="drop-cap">
+            Una concepción simplista suele reducir la tecnología a mera «ciencia aplicada», suponiendo que primero se descubre una ley natural y luego se fabrica un artefacto. Sin embargo, la historia muestra tensiones e interacciones mucho más ricas. Durante siglos, la técnica resolvió problemas complejos sin teoría científica previa (como el uso medicinal de la quinina o el curare). Más aún, durante la Primera Revolución Industrial, la <strong>máquina de vapor</strong> de James Watt —con su invención del condensador separado en 1765— funcionó décadas antes de que la termodinámica explicara sus principios físicos; como señaló <strong>Mario Bunge</strong> (1985), aquella revolución no nació en Oxford ni en Cambridge, sino del ingenio práctico de artesanos con <em>«mente mecánica»</em>. Recién hacia mediados del <strong>siglo XIX</strong> (Segunda Revolución Industrial) la técnica se fusionó sistemáticamente con la ciencia, hasta desembocar en el último cuarto del siglo XX en la <strong>tecnociencia</strong> (Javier Echeverría), donde proyectos como el ENIAC o el telescopio espacial <em>Hubble</em> muestran una retroalimentación total entre ciencia, tecnología y empresa.
+          </p>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Diferencias esenciales entre técnica y tecnología según Manuel Liz
+            </h4>
+            <p>
+              Tanto la técnica como la tecnología suelen confundirse con los objetos físicos resultantes, pero ambas son, ante todo, <strong>sistemas de acciones y conocimientos humanos</strong>. Para distinguirlas con rigor, las autoras acuden al filósofo <strong>Manuel Liz</strong> (1995):
+            </p>
+
+            <blockquote class="my-6 pl-6 pr-4 py-4 border-l-4 border-terracotta bg-paper-warm dark:bg-paper-darkWarm rounded-r-xl font-serif italic text-base text-stone-800 dark:text-stone-200">
+              «La técnica comprende las actividades o sistemas de acciones artesanales, artísticas, dirigidas hacia el propio cuerpo y su entorno inmediato, etc., de carácter socialmente estructurado, pero no directamente integradas en los modernos procesos productivos industriales (...) ni vinculadas a la actividad científica.» / «La tecnología comprende las actividades o sistemas de acciones socialmente estructuradas, sumamente integradas en los procesos productivos industriales y estrechamente vinculadas al conocimiento científico.»
+              <footer class="not-italic font-sans text-base font-medium text-stone-600 dark:text-stone-400 mt-2">
+                — Manuel Liz, <em>Conocer y actuar a través de la tecnología</em> (1995)
+              </footer>
+            </blockquote>
+
+            <!-- Cuadro comparativo Técnica vs. Tecnología -->
+            <div class="my-6 overflow-x-auto rounded-xl border border-stone-300 dark:border-stone-700">
+              <table class="w-full text-left border-collapse text-base">
+                <thead>
+                  <tr class="bg-paper-warm dark:bg-paper-darkWarm border-b border-stone-300 dark:border-stone-700">
+                    <th class="p-4 font-serif font-bold text-stone-900 dark:text-white">Dimensión</th>
+                    <th class="p-4 font-serif font-bold text-terracotta dark:text-orange-400">Técnica</th>
+                    <th class="p-4 font-serif font-bold text-slateblue dark:text-blue-300">Tecnología</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-paper-darkCard">
+                  <tr>
+                    <td class="p-4 font-semibold">Vínculo con ciencia e industria</td>
+                    <td class="p-4">No vinculada a la ciencia ni integrada a empresas industriales; carácter artesanal o artístico.</td>
+                    <td class="p-4">Estrechamente vinculada al conocimiento científico e integrada a procesos productivos industriales.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Intereses y alcance</td>
+                    <td class="p-4">Persigue intereses individuales orientados a modificar el entorno próximo de modo directo.</td>
+                    <td class="p-4">Persigue intereses colectivos sofisticados y opera en niveles de la realidad no accesibles directamente.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Tipo de saber y transmisión</td>
+                    <td class="p-4">Combina saber qué hacer (<em>know that</em>) y cómo hacerlo (<em>know how</em>) transmitidos personalmente.</td>
+                    <td class="p-4">Exige aprendizaje institucional (universidades, escuelas), conservando una cuota de experiencia u oficio.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4 font-semibold">Evaluación y difusión</td>
+                    <td class="p-4">Evaluación inmediata en los contextos de producción y uso.</td>
+                    <td class="p-4">Evaluación interna y externa alejada de la producción; difusión restringida por patentes y secretos (Bunge).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Clasificación de tecnologías (Quintanilla) y el método tecnológico (Klimovsky)
+            </h4>
+            <p>
+              De acuerdo con <strong>Miguel Ángel Quintanilla</strong> (2017), según el papel de los agentes humanos, las tecnologías se dividen en: <strong>1) Tecnologías basadas fundamentalmente en conocimientos</strong> —ya sean <em>teóricos científicos</em> (tecnologías de punta con alto peso de I+D como láser, fusión nuclear o ingeniería genética) u <em>operacionales con fuerte base científica</em> (ingenierías tradicionales, arquitectura, cirugía)—; y <strong>2) Tecnologías basadas fundamentalmente en habilidades o capacidades</strong> —manuales, organizativas e intelectuales, tanto específicas como no específicas—. A ello se suma la distinción material entre <strong>tecnologías duras</strong> (alto impacto ambiental y consumo energético), <strong>tecnologías blandas</strong> (bajo consumo, sustentables y eficientes, como generadores domésticos limpios) y <strong>tecnologías organizacionales</strong> (sistema fabril, laboratorios de I+D, Taylorismo, Fordismo, parques tecno-industriales y el Triángulo de Jorge Sábato).
+            </p>
+            <p>
+              Por otra parte, la tecnología no solo utiliza saberes científicos, sino que <strong>emula el método científico</strong>. Sobre los contextos propuestos por el epistemólogo argentino <strong>Gregorio Klimovsky</strong> (1971), el <strong>método tecnológico</strong> atraviesa tres contextos y seis etapas: en el <strong>contexto de descubrimiento</strong> se plantea un problema práctico, se realiza el diseño aproximado de la cosa, estado o proceso y se buscan los principios (leyes o reglas) y datos necesarios; en el <strong>contexto de justificación</strong> se construye un modelo en escala o prototipo y se efectúan pruebas de factibilidad, fiabilidad y eficiencia con revisión crítica; y finalmente se despliega un tercer contexto propio de la tecnología, el <strong>contexto de aplicación</strong>, que comprende la fabricación, producción, implementación, comercialización y evaluación de consecuencias.
+            </p>
+          </div>
+        </div>
+
+        <!-- Síntesis integradora de cierre -->
+        <aside class="rounded-xl bg-paper-warm dark:bg-paper-darkWarm border border-stone-300 dark:border-stone-700 p-6 space-y-3 text-base">
+          <div class="flex items-center gap-2 font-serif text-lg font-bold text-stone-900 dark:text-white">
+            <i data-lucide="bookmark-check" class="w-5 h-5 text-terracotta dark:text-orange-400"></i>
+            <span>Síntesis integradora del Bloque III</span>
+          </div>
+          <p class="text-stone-700 dark:text-stone-300 leading-relaxed">
+            La tecnología no es simple ciencia aplicada: la historia de la máquina de vapor demuestra que la técnica precedió a la termodinámica, consolidándose su vínculo con la ciencia recién desde mediados del siglo XIX hasta llegar a la tecnociencia contemporánea (Echeverría). Siguiendo a Manuel Liz, la técnica es artesanal, individual y de evaluación inmediata, mientras que la tecnología está integrada a procesos industriales, vinculada a la ciencia, protegida por patentes o secretos (Bunge) y sometida a evaluaciones alejadas. Clasificadas por Quintanilla según conocimientos u habilidades —y diferenciadas en duras, blandas y organizacionales—, las tecnologías operan mediante un método propio que adapta los contextos de descubrimiento y justificación de Klimovsky y añade el contexto de aplicación.
+          </p>
+        </aside>
+      </article>
+
+      <!-- ===================================================================
+           BLOQUE IV
+      ==================================================================== -->
+      <article data-block="b4" class="study-block bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-200/90 dark:border-stone-800 p-6 sm:p-10 shadow-sm space-y-8">
+        <header class="border-b border-stone-200 dark:border-stone-800 pb-6 space-y-2">
+          <p class="font-mono text-base text-slateblue dark:text-blue-300">
+            Bloque IV • Milena Ramallo y Élida Repetto — Cambio tecnológico e innovación
+          </p>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white leading-snug">
+            Dinámica del cambio tecnológico, I+D y paradigmas tecno-económicos
+          </h3>
+        </header>
+
+        <div class="space-y-6 text-base text-stone-800 dark:text-stone-200 leading-relaxed max-w-4xl">
+          <p class="drop-cap">
+            Suele repetirse que los países deben subirse al «tren del progreso» para no quedar atrás. Ramallo y Repetto cuestionan esa metáfora: no existe un único tren ni un destino inevitable, sino múltiples futuros tecnológicos posibles que dependen de decisiones humanas. El desarrollo tecnológico <strong>no es lineal sino multidireccional</strong> (zigzagueante, con avances y retrocesos) y no responde solo a criterios de eficiencia técnica aislada: la heladera eléctrica desplazó a la heladera refrigerada a gas no porque fuera técnicamente más eficiente en sí misma, sino porque resultaba más económica una vez tendidas las redes eléctricas. Este cambio avanza combinando <strong>saltos estructurales</strong> (rupturas radicales apoyadas en la ciencia) y <strong>períodos de evolución gradual</strong> (mejoras acumulativas sostenidas por el aprendizaje por experiencia y la <em>masa crítica</em> de recursos).
+          </p>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              De los determinismos unicausales al modelo de interacción
+            </h4>
+            <p>
+              Para explicar <em>por qué</em> cambia la tecnología, las visiones <strong>deterministas</strong> buscan una única causa motora: el <em>modelo tecnológico</em> (la tecnología evoluciona autónomamente y moldea la sociedad), el <em>económico</em> (maximizar eficiencia comercial y minimizar costos), el <em>político</em> (control jerárquico ejercido por minorías dominantes) o el <em>cultural</em> (valores y creencias; criticado por el marxismo por invertir la base material). Frente a todos ellos, el <strong>modelo de interacción</strong> propone una perspectiva sistémica y compleja donde tecnología, economía, política y cultura se retroalimentan: tecnología y sociedad actúan como <em>espejos recíprocos</em>, de modo que nuestras sociedades son tecnológicas tanto como nuestras tecnologías son sociales.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Investigación y desarrollo (I+D), invención e innovación tecnológica
+            </h4>
+            <p>
+              Las actividades de <strong>Investigación y Desarrollo (I+D)</strong> articulan tres subprocesos: la <strong>investigación básica</strong> (busca fundamentos teóricos sin fin comercial directo), la <strong>investigación aplicada</strong> (persigue un objetivo práctico o comercial específico) y el <strong>desarrollo experimental/tecnológico</strong> (valida prototipos que luego la ingeniería transforma en productos económicamente vendibles). Como señala <strong>Quintanilla</strong> (2017), estos programas están atravesados por dos contextos: el <em>científico-tecnológico</em>, que origina la <strong>evaluación interna</strong> (factibilidad, eficiencia y fiabilidad), y el <em>social</em>, que origina la <strong>evaluación externa</strong> (consecuencias e idoneidad).
+            </p>
+            <p>
+              En este proceso conviene distinguir con rigor entre <strong>invención</strong> e <strong>innovación</strong>. Una <em>invención</em> es la creación de un nuevo dispositivo o procedimiento con utilidad práctica (o el control de algo previo, como el fuego; o la radio de Marconi apoyada en las patentes de Tesla y las teorías de Faraday, Maxwell y Hertz). Pero muchas invenciones jamás llegan al mercado. Una invención se convierte en <strong>innovación tecnológica</strong> recién cuando factores políticos, sociales y económicos posibilitan su producción, comercialización, uso y difusión exitosa: es, por tanto, un <em>hecho económico-social</em> que conjuga lo técnicamente posible con lo socioeconómicamente deseado.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-serif text-xl sm:text-2xl font-semibold text-stone-900 dark:text-white pt-2">
+              Taxonomía de Freeman, paradigmas de Carlota Pérez y la era digital
+            </h4>
+            <p>
+              Siguiendo a <strong>Christopher Freeman</strong> (1987), las innovaciones se ordenan en cuatro niveles: <strong>incrementales</strong> (mejoras continuas que elevan gradualmente la productividad), <strong>radicales</strong> (productos o procesos verdaderamente nuevos que rompen la trayectoria previa, como la energía nuclear), <strong>sistemas tecnológicos</strong> (combinación de innovaciones radicales, graduales y organizacionales que transforman múltiples sectores, como la televisión) y <strong>paradigmas tecno-económicos</strong>, capaces de reorganizar toda la economía y la cultura.
+            </p>
+
+            <blockquote class="my-6 pl-6 pr-4 py-4 border-l-4 border-slateblue bg-paper-warm dark:bg-paper-darkWarm rounded-r-xl font-serif italic text-base text-stone-800 dark:text-stone-200">
+              «Un paradigma [tecnológico] es, entonces, una lógica colectiva compartida en que convergen el potencial tecnológico, los costos relativos, la aceptación del mercado, la coherencia funcional y otros factores.»
+              <footer class="not-italic font-sans text-base font-medium text-stone-600 dark:text-stone-400 mt-2">
+                — Carlota Pérez, <em>Revoluciones tecnológicas y paradigmas tecnoeconómicos</em> (2010, p. 139)
+              </footer>
+            </blockquote>
+
+            <p>
+              Cada paradigma fija la <strong>trayectoria</strong> esperada de los productos: mientras a fines de los noventa se esperaba que los celulares fueran cada vez más diminutos, la irrupción de los <em>smartphones</em> reorientó la trayectoria hacia pantallas amplias, cámaras de alta resolución y capacidad de procesamiento. Cuando empresas, universidades, Estado y usuarios se articulan en red, conforman un <em>sistema nacional de innovación</em> (Arocena, 1993).
+            </p>
+            <p>
+              En el paradigma digital contemporáneo —la Cuarta Revolución Industrial analizada por <strong>Klaus Schwab</strong> (2017)—, la digitalización impacta en cuatro dimensiones: transforma la experiencia del cliente (<em>Nespresso</em>), mejora productos mediante datos y sensores de mantenimiento predictivo, impulsa alianzas colaborativas entre corporaciones y <em>start-ups</em> (<em>Uber</em> o la creación del holding <em>Alphabet</em> por <em>Google</em>) y consolida plataformas globales de acceso sin propiedad física (<em>Spotify</em> o <em>Mercado Libre</em>). Esto exige ciberseguridad y da lugar al <strong>talentismo</strong> (centralidad del talento humano calificado en equipos dinámicos). Finalmente, frente al <strong>sonambulismo tecnológico</strong> denunciado por <strong>Langdon Winner</strong> —tomar decisiones sobre tecnología «deambulando dormidos» sin conocer sus consecuencias—, Quintanilla (2017) recuerda que <em>«las tecnologías son como son porque hay personas que toman decisiones para que sean así»</em>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Síntesis integradora de cierre -->
+        <aside class="rounded-xl bg-paper-warm dark:bg-paper-darkWarm border border-stone-300 dark:border-stone-700 p-6 space-y-3 text-base">
+          <div class="flex items-center gap-2 font-serif text-lg font-bold text-stone-900 dark:text-white">
+            <i data-lucide="bookmark-check" class="w-5 h-5 text-slateblue dark:text-blue-300"></i>
+            <span>Síntesis integradora del Bloque IV</span>
+          </div>
+          <p class="text-stone-700 dark:text-stone-300 leading-relaxed">
+            El cambio tecnológico es multidireccional y combina saltos estructurales con evolución gradual; lejos de responder a un determinismo único, se explica por el modelo de interacción recíproca entre tecnología y sociedad. Mediante programas de I+D —sometidos a evaluación interna y externa (Quintanilla)—, las invenciones se transforman en innovaciones cuando alcanzan aceptación y difusión socioeconómica. Escalonadas desde mejoras incrementales hasta paradigmas tecno-económicos (Freeman y Carlota Pérez), las revoluciones tecnológicas desembocan hoy en la era digital, el talentismo (Schwab) y la exigencia ética de abandonar el sonambulismo tecnológico (Winner) para asumir la responsabilidad política de nuestras decisiones.
+          </p>
+        </aside>
+      </article>
+    </section>
+
+    <!-- =====================================================================
+         SECCIÓN 2: VOCES Y CITAS DE LOS AUTORES
+    ====================================================================== -->
+    <section id="view-autores" class="tab-view hidden animate-editorial space-y-8">
+      <div class="border-y-2 border-stone-900 dark:border-stone-200 py-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <h2 class="font-serif text-3xl font-bold text-stone-900 dark:text-white">
+            Voces y citas clave de la bibliografía
+          </h2>
+          <p class="text-base text-stone-700 dark:text-stone-300 max-w-2xl">
+            Las tesis centrales y citas textuales de los autores trabajados en ambos apuntes, acompañadas de su explicación y su relevancia para el parcial.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterAuthors('all', this)" class="author-filter-btn px-4 py-2 rounded-lg text-base font-semibold bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 transition">
+            Todos (11)
+          </button>
+          <button onclick="filterAuthors('apunte1', this)" class="author-filter-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 transition">
+            Apunte 1: Ciencia
+          </button>
+          <button onclick="filterAuthors('apunte2', this)" class="author-filter-btn px-4 py-2 rounded-lg text-base font-medium border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-stone-800 dark:text-stone-200 transition">
+            Apunte 2: Tecnología
+          </button>
+        </div>
+      </div>
+
+      <div id="authorsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECCIÓN 3: TARJETAS DE ESTUDIO (FLASHCARDS)
+    ====================================================================== -->
+    <section id="view-flashcards" class="tab-view hidden animate-editorial space-y-8">
+      <div class="border-y-2 border-stone-900 dark:border-stone-200 py-6 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <h2 class="font-serif text-3xl font-bold text-stone-900 dark:text-white">
+            Tarjetas de estudio para repaso activo
+          </h2>
+          <p class="text-base text-stone-700 dark:text-stone-300 max-w-2xl">
+            Pulsá sobre cada tarjeta para girarla y comprobar si recordás con precisión las distinciones conceptuales que evalúa la cátedra.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <select id="flashcardFilter" onchange="renderFlashcards()" aria-label="Filtrar tarjetas por bloque" class="px-4 py-2.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-base font-medium text-stone-800 dark:text-stone-200 focus:outline-none focus:ring-2 focus:ring-terracotta">
+            <option value="all">Todos los bloques (20 tarjetas)</option>
+            <option value="ciencia">Bloque I: Ciencia y epistemología</option>
+            <option value="metodo">Bloques I y III: Métodos científico y tecnológico</option>
+            <option value="historia">Bloque II: Historia, cosmología y sociedad</option>
+            <option value="tecnologia">Bloques III y IV: Técnica, tecnología e innovación</option>
+          </select>
+          <button onclick="shuffleFlashcards()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-terracotta hover:bg-orange-900 text-white text-base font-semibold transition">
+            <i data-lucide="shuffle" class="w-4 h-4"></i>
+            <span>Mezclar</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="flashcardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECCIÓN 4: SIMULACRO DE EXAMEN CON PUNTAJE NEGATIVO
+    ====================================================================== -->
+    <section id="view-simulacro" class="tab-view hidden animate-editorial space-y-8">
+      <div class="rounded-2xl bg-stone-900 text-stone-100 p-6 sm:p-8 border border-stone-700 space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-2 max-w-3xl">
+            <div class="inline-flex items-center gap-2 font-mono text-base text-orange-400">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+              <span>Sistema oficial de calificación • Cátedra II (Escala sobre 10 puntos)</span>
+            </div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">
+              Simulacro de primer parcial con descuento por error
+            </h2>
+            <p class="text-base text-stone-300 leading-relaxed">
+              <strong>Regla de evaluación:</strong> En cada consigna de opción múltiple (puede haber una o varias opciones verdaderas), cada opción correcta marcada suma su fracción correspondiente, pero <strong>cada opción incorrecta marcada resta el 50 % del valor de cada opción correcta</strong>. Si dudás sobre una afirmación, es preferible dejarla sin marcar.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3 shrink-0">
+            <button onclick="resetExam()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-stone-800 hover:bg-stone-700 border border-stone-600 text-base font-medium text-white transition">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>Reiniciar</span>
+            </button>
+            <button onclick="gradeExam()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-terracotta hover:bg-orange-800 text-white text-base font-semibold shadow-sm transition">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span>Entregar y corregir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado global -->
+      <div id="examResultsBanner" class="hidden rounded-2xl p-6 sm:p-8 border-2 animate-editorial"></div>
+
+      <!-- Lista de preguntas -->
+      <div id="examQuestionsContainer" class="space-y-8"></div>
+
+      <!-- Acciones inferiores -->
+      <div class="flex flex-wrap justify-end gap-3 pt-4 pb-8">
+        <button onclick="resetExam()" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-paper-darkCard text-base font-medium hover:bg-stone-100 dark:hover:bg-stone-800 transition">
+          <i data-lucide="eraser" class="w-4 h-4"></i>
+          <span>Limpiar respuestas</span>
+        </button>
+        <button onclick="gradeExam()" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-terracotta hover:bg-orange-800 text-white text-base font-semibold shadow-md transition">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          <span>Finalizar y ver devolución detallada</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pie de página editorial -->
+  <footer class="border-t border-stone-300/80 dark:border-stone-800 bg-paper-warm/60 dark:bg-paper-darkCard py-6 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-base text-stone-600 dark:text-stone-400">
+      <p>Ingeniería y Sociedad — Cátedra II (Directora: Milena Ramallo)</p>
+      <p class="font-serif italic">Material de apoyo basado en Bitocchi y Ramallo & Repetto</p>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       LÓGICA INTERACTIVA
+  ====================================================================== -->
+  <script>
+    // 1. Modo lectura (claro / oscuro)
+    const themeToggle = document.getElementById('themeToggle');
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // 2. Desplegable interactivo Alicia Gianella <-> Mario Bunge
+    function toggleGianellaPanel() {
+      const panel = document.getElementById('gianellaConnectionPanel');
+      const btn = document.getElementById('btnGianellaToggle');
+      const arrow = document.getElementById('iconGianellaArrow');
+      const isHidden = panel.classList.contains('hidden');
+
+      if (isHidden) {
+        panel.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        arrow.classList.add('rotate-90');
+      } else {
+        panel.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        arrow.classList.remove('rotate-90');
+      }
+    }
+
+    // 3. Navegación entre pestañas y filtrado de bloques
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900');
+        btn.classList.add('text-stone-700', 'dark:text-stone-300', 'hover:bg-stone-200/70', 'dark:hover:bg-stone-800');
+      });
+
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      activeBtn.classList.remove('text-stone-700', 'dark:text-stone-300', 'hover:bg-stone-200/70', 'dark:hover:bg-stone-800');
+      activeBtn.classList.add('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    function filterBlock(blockId, clickedBtn) {
+      document.querySelectorAll('.block-nav-btn').forEach(btn => {
+        btn.classList.remove('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900', 'font-semibold');
+        btn.classList.add('border', 'border-stone-300', 'dark:border-stone-700', 'bg-white', 'dark:bg-paper-darkCard', 'text-stone-800', 'dark:text-stone-200', 'font-medium');
+      });
+
+      if (clickedBtn) {
+        clickedBtn.classList.remove('border', 'border-stone-300', 'dark:border-stone-700', 'bg-white', 'dark:bg-paper-darkCard', 'text-stone-800', 'dark:text-stone-200', 'font-medium');
+        clickedBtn.classList.add('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900', 'font-semibold');
+      }
+
+      document.querySelectorAll('.study-block').forEach(el => {
+        if (blockId === 'all' || el.dataset.block === blockId) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    // 4. Galería de voces y citas de los autores (11 autores solicitados)
+    const authorsData = [
+      {
+        name: "Mario Bunge",
+        source: "apunte1",
+        context: "Epistemología y filosofía de la técnica (Apuntes 1 y 2)",
+        quote: "«La ciencia es un conocimiento racional (o lógico), sistemático, exacto, verificable y por consiguiente falible.» / «Un mundo le es dado al hombre, su gloria no es soportar o despreciar este mundo, sino enriquecerlo construyendo otros universos.»",
+        plain: "Para Bunge, el ser humano construye un mundo artificial de ideas científicas para comprender y transformar la realidad. Ese saber no es dogmático: razona lógicamente (racional), ordena sus teorías provisionalmente (sistemático), define sus términos sin ambigüedad ni vaguedad (exacto), somete sus conjeturas a prueba real (verificable) y, por ello mismo, siempre puede ser corregido (falible). Además, en el Apunte 2 señala que la Primera Revolución Industrial nació de artesanos con «mente mecánica» y no de científicos universitarios.",
+        examNote: "En Bunge, «exacto» se refiere a precisión semántica del lenguaje (no a ecuaciones matemáticas), y «falible» significa contingente o refutable, nunca erróneo."
+      },
+      {
+        name: "Alicia Gianella",
+        source: "apunte1",
+        context: "Introducción a la epistemología y metodología (Apunte 1)",
+        quote: "«La ciencia es un conocimiento racional y saber crítico, es sistemático, es preciso usando un lenguaje técnico, tiene un carácter metódico, formula leyes generales y acepta supuestos.»",
+        plain: "Complementa la definición de Bunge destacando que la ciencia es un saber crítico (cuestiona todo sin aceptar dogmas), emplea un vocabulario técnico especializado para evitar confusiones del lenguaje común, sigue procedimientos rigurosos y formula leyes generales partiendo de ciertos supuestos teóricos.",
+        examNote: "Sus notas se articulan directamente con Bunge: el saber crítico refuerza la racionalidad y falibilidad; el lenguaje técnico precisa la exactitud semántica; y las leyes generales estructuran la sistematicidad."
+      },
+      {
+        name: "Galileo Galilei",
+        source: "apunte1",
+        context: "Revolución científica de 1610 (Apunte 1)",
+        quote: "«La filosofía [el universo] está escrita en lengua matemática, y los caracteres son triángulos, círculos y otras figuras geométricas sin los cuales es humanamente imposible entender una palabra.»",
+        plain: "Con Galileo surge la ciencia moderna o «diálogo experimental» (Prigogine y Stengers), sostenida en dos pilares: la matematización de la naturaleza (cuantificar y medir todo fenómeno mensurable para controlarlo objetivamente) y la experimentación continua mediada por instrumentos.",
+        examNote: "Recordá siempre los dos pilares galileanos: matematización de la naturaleza y experimentación continua."
+      },
+      {
+        name: "Thomas Kuhn",
+        source: "apunte1",
+        context: "Comunidad científica y paradigmas (Apunte 1)",
+        quote: "Conceptos clave: «Comunidad científica» y «Paradigma» (realizaciones científicas universalmente reconocidas que durante cierto tiempo proporcionan modelos de problemas y soluciones).",
+        plain: "Kuhn mostró que la ciencia no es obra de investigadores aislados, sino una actividad colectiva desarrollada por comunidades científicas insertas en una sociedad, que comparten un paradigma común sobre qué investigar y cómo validar los resultados.",
+        examNote: "Asociá a Thomas Kuhn con la dimensión colectiva de la ciencia: comunidades científicas organizadas en torno a un paradigma."
+      },
+      {
+        name: "León Olivé",
+        source: "apunte1",
+        context: "Ética, justicia social e imbricación ciencia-tecnología (Apunte 1)",
+        quote: "Caso del campesino de Oaxaca (maíz transgénico) e «imbricación de la ciencia y la tecnología nunca vista».",
+        plain: "A través del ejemplo del campesino oaxaqueño que cultiva sin saberlo maíz transgénico, Olivé demuestra que el conocimiento científico no es neutro ni indiferente: crea dependencia económica y cultural. Por ello reclama políticas de Estado guiadas por la justicia social (satisfacer necesidades básicas y respetar los valores y formas de vida) y describe cómo ciencia y tecnología se entrelazan como tejas acanaladas.",
+        examNote: "Para Olivé, la justicia social exige dos condiciones simultáneas: satisfacer necesidades básicas y respetar los valores y formas de vida."
+      },
+      {
+        name: "Manuel Liz",
+        source: "apunte2",
+        context: "Distinción entre técnica y tecnología (Apunte 2)",
+        quote: "Técnica: «...actividades o sistemas de acciones artesanales, artísticas, dirigidas hacia el propio cuerpo y su entorno inmediato (...) ni vinculadas a la actividad científica.» / Tecnología: «...sumamente integradas en los procesos productivos industriales y estrechamente vinculadas al conocimiento científico.»",
+        plain: "Manuel Liz delimita ambos conceptos como sistemas de acciones y conocimientos humanos (no meros artefactos físicos). La técnica persigue intereses individuales inmediatos, combina saber qué hacer (know that) y cómo hacerlo (know how) y se evalúa en su uso. La tecnología persigue intereses colectivos, se integra a empresas industriales, se vincula a la ciencia y tiene evaluaciones alejadas de la producción.",
+        examNote: "Ni la técnica ni la tecnología son simples objetos materiales: ambas son sistemas de acciones y saberes que producen artefactos."
+      },
+      {
+        name: "Javier Echeverría",
+        source: "apunte2",
+        context: "Sociedad de la información y tecnociencia (Apunte 2)",
+        quote: "Noción de «Tecnociencia» (La revolución tecnocientífica, 2003).",
+        plain: "Echeverría analiza una nueva modalidad de poder surgida en el último cuarto del siglo XX tras la Big Science de posguerra y la informática: la tecnociencia, caracterizada por la relación total entre ciencia, tecnología y empresa privada, donde el conocimiento científico-tecnológico se convierte en un nuevo sector económico.",
+        examNote: "La tecnociencia representa la fase superior de integración total entre ciencia, tecnología, financiamiento e innovación productiva."
+      },
+      {
+        name: "Miguel Ángel Quintanilla",
+        source: "apunte2",
+        context: "Clasificación tecnológica, I+D y decisión humana (Apunte 2)",
+        quote: "«Las tecnologías son como son porque hay personas que toman decisiones para que sean así.»",
+        plain: "Quintanilla clasifica las tecnologías según el papel humano en basadas en conocimientos (teóricos de punta vs. operacionales) y basadas en habilidades (manuales, organizativas e intelectuales). También analiza las evaluaciones interna y externa en los programas de I+D y rechaza cualquier determinismo: detrás de cada desarrollo hay decisiones humanas.",
+        examNote: "Quintanilla se opone tanto al determinismo tecnológico como al «sonambulismo tecnológico» de Langdon Winner."
+      },
+      {
+        name: "Carlota Pérez",
+        source: "apunte2",
+        context: "Revoluciones tecnológicas y paradigmas tecno-económicos (Apunte 2)",
+        quote: "«Un paradigma [tecnológico] es, entonces, una lógica colectiva compartida en que convergen el potencial tecnológico, los costos relativos, la aceptación del mercado, la coherencia funcional y otros factores.»",
+        plain: "Para Carlota Pérez, un paradigma tecno-económico es un sentido común compartido que fija el horizonte de posibilidades y la trayectoria esperada de las innovaciones (por ejemplo, el paso de buscar celulares diminutos en los noventa a buscar smartphones con pantallas amplias, cámaras y mayor procesamiento).",
+        examNote: "Un paradigma tecno-económico orienta tanto a ingenieros como a consumidores sobre qué mejoras se esperan de una tecnología."
+      },
+      {
+        name: "Klaus Schwab",
+        source: "apunte2",
+        context: "La cuarta revolución industrial y el talentismo (Apunte 2)",
+        quote: "Concepto de «Talentismo» e impacto de las tecnologías digitales en las industrias (La cuarta revolución industrial, 2017).",
+        plain: "Schwab describe cómo la digitalización transforma la industria en cuatro frentes: expectativas y experiencia del cliente (Nespresso), productos mejorados con datos y sensores, innovación colaborativa entre corporaciones y start-ups (Uber, Alphabet) y plataformas globales de acceso sin propiedad (Spotify, Mercado Libre). En este escenario emerge el talentismo: la ventaja competitiva decisiva radica en atraer y retener talento humano calificado en equipos dinámicos.",
+        examNote: "En Schwab, el «talentismo» reemplaza al capital físico tradicional como factor crítico de competitividad empresarial."
+      },
+      {
+        name: "Langdon Winner",
+        source: "apunte2",
+        context: "Crítica política al sonambulismo tecnológico (Apunte 2)",
+        quote: "Concepto de «Sonambulismo tecnológico» (Autonomous Technology, 1977).",
+        plain: "Winner critica el «sonambulismo tecnológico» de aquellos funcionarios y decisores que toman determinaciones sobre políticas tecnológicas «deambulando dormidos», sin comprender sus consecuencias sociales, culturales y ambientales.",
+        examNote: "Frente al sonambulismo tecnológico de Winner, las autoras reivindican la toma consciente de decisiones propuesta por Quintanilla."
+      }
+    ];
+
+    function renderAuthors(filter = 'all') {
+      const grid = document.getElementById('authorsGrid');
+      grid.innerHTML = '';
+      const filtered = filter === 'all' ? authorsData : authorsData.filter(a => a.source === filter);
+
+      filtered.forEach(author => {
+        const card = document.createElement('article');
+        card.className = 'bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-200 dark:border-stone-800 p-6 sm:p-7 shadow-sm flex flex-col justify-between space-y-5 hover:border-terracotta/60 transition';
+        card.innerHTML = `
+          <div class="space-y-4">
+            <div class="border-b border-stone-200 dark:border-stone-800 pb-3">
+              <p class="font-mono text-base text-slateblue dark:text-blue-300">${author.context}</p>
+              <h3 class="font-serif text-2xl font-bold text-stone-900 dark:text-white mt-0.5">${author.name}</h3>
+            </div>
+            <blockquote class="font-serif italic text-base text-stone-800 dark:text-stone-200 bg-paper-warm dark:bg-paper-darkWarm p-4 rounded-r-xl border-l-4 border-terracotta leading-relaxed">
+              ${author.quote}
+            </blockquote>
+            <p class="text-base text-stone-700 dark:text-stone-300 leading-relaxed">
+              ${author.plain}
+            </p>
+          </div>
+          <div class="pt-4 border-t border-stone-200 dark:border-stone-800 flex items-start gap-3 text-base text-stone-800 dark:text-stone-200 bg-terracotta-light/60 dark:bg-orange-950/20 p-4 rounded-xl">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-terracotta dark:text-orange-400 shrink-0 mt-1"></i>
+            <span><strong>Clave de examen:</strong> ${author.examNote}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function filterAuthors(source, clickedBtn) {
+      document.querySelectorAll('.author-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900', 'font-semibold');
+        btn.classList.add('border', 'border-stone-300', 'dark:border-stone-700', 'bg-white', 'dark:bg-paper-darkCard', 'text-stone-800', 'dark:text-stone-200', 'font-medium');
+      });
+      if (clickedBtn) {
+        clickedBtn.classList.remove('border', 'border-stone-300', 'dark:border-stone-700', 'bg-white', 'dark:bg-paper-darkCard', 'text-stone-800', 'dark:text-stone-200', 'font-medium');
+        clickedBtn.classList.add('bg-stone-900', 'text-white', 'dark:bg-stone-100', 'dark:text-stone-900', 'font-semibold');
+      }
+      renderAuthors(source);
+    }
+
+    // 5. Tarjetas de estudio (20 flashcards con tamaño de letra uniforme text-base)
+    let flashcardsData = [
+      { cat: "ciencia", q: "¿Qué significa que la ciencia moderna sea «exacta» según Mario Bunge?", a: "No alude a la matemática ni a la lógica, sino al sentido semántico del lenguaje: emplea términos claros y precisos para evitar la ambigüedad (definiciones contradictorias) y la vaguedad (definición confusa)." },
+      { cat: "ciencia", q: "¿Por qué Bunge afirma que el conocimiento científico es «falible»?", a: "Porque sus enunciados sobre hechos dependen de verificaciones empíricas y nunca son definitivos ni absolutos: nuevas pruebas pueden refutar o corregir una teoría vigente (es conocimiento contingente)." },
+      { cat: "ciencia", q: "¿Cómo se articulan las notas de Alicia Gianella con la definición de Mario Bunge?", a: "El «saber crítico» de Gianella dialoga con la racionalidad y falibilidad de Bunge; su «lenguaje técnico» especifica la exactitud semántica; y la «formulación de leyes generales» completa la sistematicidad." },
+      { cat: "ciencia", q: "¿En qué consiste la «auxiliariedad» de las ciencias formales?", a: "Es el sustento lógico y matemático que la Lógica y la Matemática brindan a las ciencias fácticas (naturales y sociales) para deducir rigurosamente consecuencias contrastables a partir de una hipótesis." },
+      { cat: "ciencia", q: "¿Qué diferencia a una proposición analítica de una sintética?", a: "La proposición analítica pertenece a las ciencias formales y se demuestra racionalmente sin recurrir a la experiencia. La sintética pertenece a las ciencias fácticas (como una hipótesis), agrega información nueva sobre la realidad y exige prueba empírica." },
+      { cat: "metodo", q: "¿Qué distingue al contexto de descubrimiento del contexto de justificación en el método científico?", a: "El contexto de descubrimiento es dinámico (intervienen la creatividad, factores culturales y el marco teórico para formular problema e hipótesis). El de justificación es estático y lógico-experimental (deducción de consecuencias y corroboración o falsación)." },
+      { cat: "metodo", q: "¿Qué son las «consecuencias contrastables» en el método hipotético-deductivo?", a: "Son proposiciones singulares deducidas lógicamente de una hipótesis general, formuladas de manera tal que puedan confrontarse concretamente con los hechos de la experiencia." },
+      { cat: "metodo", q: "¿Cuáles son los seis pasos secuenciales del método tecnológico según Gregorio Klimovsky?", a: "1) Planteo de un problema práctico; 2) Diseño aproximado del artefacto o proceso; 3) Búsqueda de principios (leyes o reglas) y datos; 4) Construcción de modelo o prototipo; 5) Pruebas de factibilidad, fiabilidad y eficiencia; 6) Fabricación, comercialización y evaluación." },
+      { cat: "metodo", q: "¿Cuál es el tercer contexto exclusivo del método tecnológico que no aparece en el científico?", a: "El contexto de aplicación (o contexto tecnológico), donde se realiza la fabricación, producción, implementación, comercialización y evaluación de consecuencias sociales y ambientales." },
+      { cat: "historia", q: "¿Qué diferencia al heliocentrismo de Copérnico (1543) de la propuesta de Giordano Bruno (1584)?", a: "Copérnico ubica al Sol en el centro pero mantiene un universo finito, conservando el Cielo Empíreo cristiano. Giordano Bruno postula un universo infinito y sin centro con múltiples sistemas planetarios, eliminando el Cielo Empíreo literal." },
+      { cat: "historia", q: "¿Cuáles son los dos pilares del «diálogo experimental» de Galileo Galilei?", a: "1) La matematización de la naturaleza (cuantificar y medir fenómenos mensurables para controlarlos objetivamente) y 2) La experimentación continua mediante instrumentos (experiencias espontáneas y experimentos provocados)." },
+      { cat: "historia", q: "¿Qué enseña el caso del maíz transgénico en Oaxaca analizado por León Olivé?", a: "Demuestra que la ciencia y la tecnología no son neutras: generan dependencia económica y cultural. Exige políticas guiadas por la justicia social (satisfacer necesidades básicas y respetar los valores y formas de vida)." },
+      { cat: "historia", q: "¿Qué significa la «imbricación» entre ciencia y tecnología?", a: "Alude a las tejas acanaladas de un techo que se entrecruzan: ciencia y tecnología hoy están estrechamente entrelazadas formando un entramado por donde fluyen y se canalizan las demandas sociales." },
+      { cat: "tecnologia", q: "¿Cuál es la diferencia esencial entre técnica y tecnología según Manuel Liz?", a: "La técnica es artesanal o artística, no vinculada a la ciencia ni integrada a empresas industriales, persigue intereses individuales inmediatos y se evalúa en su uso. La tecnología está integrada a procesos industriales, vinculada a la ciencia, busca intereses colectivos y tiene evaluación alejada de la producción." },
+      { cat: "tecnologia", q: "¿Por qué la tecnología no puede reducirse a simple «ciencia aplicada»?", a: "Porque históricamente muchas técnicas precedieron a la teoría científica (como la máquina de vapor antes de la termodinámica), la tecnología conserva una cuota de experiencia u oficio y posee un método y fines prácticos propios." },
+      { cat: "tecnologia", q: "¿Qué diferencia a una invención de una innovación tecnológica?", a: "La invención crea o controla un dispositivo o procedimiento nuevo con utilidad práctica. La innovación ocurre recién cuando factores políticos, sociales y económicos posibilitan su producción, comercialización, uso y difusión exitosa." },
+      { cat: "tecnologia", q: "¿Qué sostiene el modelo de interacción frente a los modelos deterministas?", a: "Rechaza que el cambio tecnológico tenga una sola causa (técnica, económica, política o cultural). Afirma que tecnología y sociedad son espejos recíprocos: nuestras sociedades son tecnológicas tanto como nuestras tecnologías son sociales." },
+      { cat: "tecnologia", q: "¿Qué diferencia a la evaluación interna de la externa en los programas de I+D (Quintanilla)?", a: "La evaluación interna surge del contexto científico-tecnológico y mide factibilidad, eficiencia y fiabilidad. La evaluación externa surge del contexto social y evalúa consecuencias e idoneidad." },
+      { cat: "tecnologia", q: "¿Qué es un paradigma tecno-económico según Carlota Pérez?", a: "Es una lógica colectiva compartida en la que convergen el potencial tecnológico, los costos relativos, la aceptación del mercado y la coherencia funcional, fijando el horizonte y la trayectoria esperada de las innovaciones." },
+      { cat: "tecnologia", q: "¿Qué es el «talentismo» (Klaus Schwab) y qué es el «sonambulismo tecnológico» (Langdon Winner)?", a: "Talentismo: en la era digital, la ventaja competitiva clave radica en atraer y retener talento humano calificado en equipos dinámicos. Sonambulismo tecnológico: tomar decisiones sobre tecnología «deambulando dormido», sin conciencia de sus consecuencias." }
+    ];
+
+    function renderFlashcards() {
+      const grid = document.getElementById('flashcardsGrid');
+      const filter = document.getElementById('flashcardFilter').value;
+      grid.innerHTML = '';
+
+      const list = filter === 'all' ? flashcardsData : flashcardsData.filter(f => f.cat === filter);
+
+      const catLabels = {
+        ciencia: 'Bloque I • Ciencia y epistemología',
+        metodo: 'Bloques I y III • Métodos',
+        historia: 'Bloque II • Historia y sociedad',
+        tecnologia: 'Bloques III y IV • Tecnología e innovación'
+      };
+
+      list.forEach((item, idx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'perspective-1000 min-h-[19rem] cursor-pointer group';
+        wrapper.onclick = () => {
+          wrapper.querySelector('.flashcard-inner').classList.toggle('rotate-y-180');
+        };
+
+        wrapper.innerHTML = `
+          <div class="flashcard-inner relative w-full h-full min-h-[19rem] transition-transform duration-500 transform-style-3d">
+            <!-- Frente -->
+            <div class="absolute inset-0 backface-hidden bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-300 dark:border-stone-700 group-hover:border-terracotta p-6 shadow-sm flex flex-col justify-between">
+              <div class="flex items-center justify-between gap-2 border-b border-stone-200 dark:border-stone-800 pb-3">
+                <span class="font-mono text-base text-slateblue dark:text-blue-300">${catLabels[item.cat]}</span>
+                <span class="font-mono text-base text-stone-400">#${idx + 1}</span>
+              </div>
+              <p class="font-serif text-xl font-semibold text-stone-900 dark:text-white leading-snug my-auto py-3">
+                ${item.q}
+              </p>
+              <div class="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-800 text-base font-medium text-terracotta dark:text-orange-400">
+                <span>Girar para verificar respuesta</span>
+                <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <!-- Dorso -->
+            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-stone-900 text-stone-100 rounded-2xl border-2 border-terracotta p-6 shadow-md flex flex-col justify-between overflow-y-auto">
+              <div class="border-b border-stone-700 pb-2">
+                <span class="font-mono text-base text-orange-400">Desarrollo conceptual</span>
+              </div>
+              <p class="text-base text-stone-100 leading-relaxed my-auto py-3">
+                ${item.a}
+              </p>
+              <div class="flex items-center justify-between pt-2 border-t border-stone-700 text-base text-stone-400">
+                <span>Volver al enunciado</span>
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(wrapper);
+      });
+      lucide.createIcons();
+    }
+
+    function shuffleFlashcards() {
+      for (let i = flashcardsData.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flashcardsData[i], flashcardsData[j]] = [flashcardsData[j], flashcardsData[i]];
+      }
+      renderFlashcards();
+    }
+
+    // 6. Simulacro de examen con puntaje negativo (reproduciendo fielmente las trampas del parcial modelo)
+    const mcQuestions = [
+      {
+        id: "q1",
+        points: 1,
+        title: "1. Sobre los rasgos distintivos de la ciencia moderna según Mario Bunge y Alicia Gianella, marcá las afirmaciones correctas:",
+        options: [
+          {
+            id: "a",
+            text: "Su carácter «exacto» refiere a la posibilidad de expresar todas las teorías fácticas mediante ecuaciones matemáticas exactas, sin margen alguno de error.",
+            correct: false,
+            explanation: "INCORRECTA: En la definición de Bunge (Apunte 1, p. 8), «exacto» no alude a la lógica ni a la matemática, sino al sentido semántico del lenguaje: usar términos claros y precisos evitando ambigüedades y vaguedades."
+          },
+          {
+            id: "b",
+            text: "Constituye un saber crítico y sistemático cuyas teorías se ordenan provisionalmente y pueden reordenarse ante nuevas verificaciones empíricas.",
+            correct: true,
+            explanation: "CORRECTA: Articula la nota de «saber crítico» (Alicia Gianella) con el carácter «sistemático» de Bunge (Apunte 1, pp. 6-8), donde el orden de las teorías es provisional («mientras tanto no se verifique lo contrario»)."
+          },
+          {
+            id: "c",
+            text: "Su condición de «falible» deriva de su carácter «verificable», ya que las pruebas empíricas nunca establecen verdades definitivas sino contingentes.",
+            correct: true,
+            explanation: "CORRECTA: Bunge define la ciencia como «verificable y por consiguiente falible». Al depender de contrastaciones empíricas concretas, cualquier teoría puede ser refutada en el futuro; es conocimiento contingente."
+          },
+          {
+            id: "d",
+            text: "La noción amplia de ciencia ya especifica que las hipótesis deben contrastarse mediante instrumentos y que sus resultados son siempre falibles.",
+            correct: false,
+            explanation: "INCORRECTA: La noción amplia («conjunto de conocimientos metódicamente adquiridos y sistemáticamente organizados») justamente no especifica qué método se utiliza, ni si prueba empíricamente o demuestra argumentativamente, ni si es falible."
+          }
+        ]
+      },
+      {
+        id: "q2",
+        points: 1,
+        title: "2. Respecto a la clasificación de las ciencias y la relación entre ciencia y tecnología:",
+        options: [
+          {
+            id: "a",
+            text: "El método propio de las ciencias fácticas es el «método de verificación empírica», mientras que el método hipotético-deductivo pertenece exclusivamente a las ciencias formales.",
+            correct: false,
+            explanation: "INCORRECTA: Trampa clásica del parcial modelo. El método propio de las ciencias fácticas es el método hipotético-deductivo (la verificación empírica es solo el modo de demostración final, no el nombre del método). Las formales usan el método axiomático-deductivo."
+          },
+          {
+            id: "b",
+            text: "La tecnología se relaciona con la ciencia porque emplea parte de sus conocimientos y emula el método científico, compartiendo algunos contextos en su proceso.",
+            correct: true,
+            explanation: "CORRECTA: Textual del Apunte 2 (pp. 11-12) y del parcial modelo: la tecnología no solo usa conocimientos científicos, sino que emula el método científico y comparte los contextos de descubrimiento y justificación (añadiendo el de aplicación)."
+          },
+          {
+            id: "c",
+            text: "La tecnología y la ciencia persiguen exactamente los mismos fines teóricos, diferenciándose únicamente en que la tecnología utiliza instrumentos de laboratorio.",
+            correct: false,
+            explanation: "INCORRECTA: Ciencia y tecnología no buscan los mismos fines: la ciencia busca explicar y comprender fenómenos de la realidad, mientras que la tecnología persigue fines prácticos de diseño, intervención y resolución de problemas."
+          },
+          {
+            id: "d",
+            text: "La auxiliariedad de las ciencias formales consiste en brindar el sustento lógico y matemático necesario para deducir consecuencias a partir de una hipótesis fáctica.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 1 (p. 12). La adjetivación de «deductivo» en el método hipotético-deductivo proviene precisamente de la auxiliariedad de la Lógica y la Matemática respecto de las ciencias naturales y sociales."
+          }
+        ]
+      },
+      {
+        id: "q3",
+        points: 1,
+        title: "3. Sobre el método hipotético-deductivo y sus dos contextos:",
+        options: [
+          {
+            id: "a",
+            text: "El contexto de descubrimiento es estático y estrictamente lógico, mientras que el contexto de justificación es dinámico y depende de factores psicológicos y culturales.",
+            correct: false,
+            explanation: "INCORRECTA: Invierte la caracterización de ambos contextos (Apunte 1, pp. 13-14). El contexto de descubrimiento es dinámico (creatividad, factores culturales, psicológicos y políticos), mientras que el de justificación es estático (validación lógico-experimental)."
+          },
+          {
+            id: "b",
+            text: "La hipótesis científica es una proposición general (universal) y sintética formulada desde un marco teórico previo (background).",
+            correct: true,
+            explanation: "CORRECTA: Apunte 1 (p. 14). La hipótesis agrega información empírica nueva sobre la realidad (sintética), tiene alcance general y parte de conocimientos teóricos previos."
+          },
+          {
+            id: "c",
+            text: "Para contrastar una hipótesis general con la experiencia, deben deducirse de ella «consecuencias contrastables» (proposiciones singulares) cuya confrontación puede justificarla o falsarla.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 1 (p. 14). Dado que un enunciado universal no puede observarse en su totalidad, se deducen consecuencias singulares contrastables para corroborar (justificar) o refutar (falsar) la hipótesis."
+          },
+          {
+            id: "d",
+            text: "Las ciencias sociales no utilizan el método hipotético-deductivo porque el sujeto humano no puede ser abordado desde ningún marco teórico previo.",
+            correct: false,
+            explanation: "INCORRECTA: Tanto las ciencias fácticas naturales como las sociales abordan los hechos utilizando, cada una a su modo, el método hipotético-deductivo (Apunte 1, p. 13)."
+          }
+        ]
+      },
+      {
+        id: "q4",
+        points: 1,
+        title: "4. En relación con el surgimiento de la ciencia moderna y su dimensión social:",
+        options: [
+          {
+            id: "a",
+            text: "El heliocentrismo de Copérnico (1543) eliminó la finitud del universo y el Cielo Empíreo cristiano décadas antes de la obra de Giordano Bruno.",
+            correct: false,
+            explanation: "INCORRECTA: Copérnico ubicó al Sol en el centro, pero conservó un universo finito compatible con el Cielo Empíreo. Fue Giordano Bruno (1584) quien postuló un universo infinito y sin centro, desvaneciendo el Cielo Empíreo."
+          },
+          {
+            id: "b",
+            text: "El «diálogo experimental» de Galileo Galilei articula la matematización de la naturaleza (cuantificar lo mensurable) con la experimentación continua mediada por instrumentos.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 1 (pp. 21-22). La nueva ciencia descifra el universo midiéndolo matemáticamente y poniéndolo a prueba de forma continua mediante experiencias y experimentos con instrumentos."
+          },
+          {
+            id: "c",
+            text: "A partir del caso del maíz transgénico en Oaxaca, León Olivé sostiene que los conocimientos científicos no son neutros y exigen políticas orientadas por la justicia social.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 1 (p. 24). Olivé demuestra que el conocimiento científico genera dependencia económica y cultural, por lo que los Estados deben garantizar necesidades básicas y respeto a los valores y formas de vida."
+          },
+          {
+            id: "d",
+            text: "La ciencia colectivizada contemporánea ha profundizado una separación tajante e incomunicada entre la ciencia académica básica y la ciencia industrial aplicada.",
+            correct: false,
+            explanation: "INCORRECTA: Según John Ziman y Bitocchi (Apunte 1, pp. 24-25), la colectivización de la ciencia ha vuelto difusa esa frontera, unificando fines teóricos y prácticos."
+          }
+        ]
+      },
+      {
+        id: "q5",
+        points: 1,
+        title: "5. Respecto a las nociones de técnica y tecnología según Manuel Liz (1995) y su desarrollo histórico:",
+        options: [
+          {
+            id: "a",
+            text: "La tecnología se define exclusivamente como el conjunto de artefactos físicos industriales, quedando excluidas las acciones humanas y los saberes que los producen.",
+            correct: false,
+            explanation: "INCORRECTA: El Apunte 2 (p. 7) advierte contra ese error: ni la técnica ni la tecnología pueden reducirse a los objetos físicos separados de las acciones humanas y del conocimiento que los genera."
+          },
+          {
+            id: "b",
+            text: "La técnica comprende sistemas de acciones artesanales o artísticas dirigidos al entorno inmediato, no vinculados a la ciencia ni integrados a procesos productivos industriales.",
+            correct: true,
+            explanation: "CORRECTA: Definición textual de Manuel Liz (Apunte 2, p. 7). Responde a intereses individuales inmediatos y tiene evaluación cercana a los contextos de producción y uso."
+          },
+          {
+            id: "c",
+            text: "Aunque la tecnología moderna está estrechamente vinculada al conocimiento científico y al aprendizaje institucional, conserva siempre una cuota de conocimientos provenientes de la experiencia u oficio.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 2 (p. 8). Las autoras señalan explícitamente que, más allá de los saberes científicos y el método tecnológico, siempre persiste una cuota de conocimientos no sistemáticos derivados de la experiencia u oficio."
+          },
+          {
+            id: "d",
+            text: "Las comunidades tecnológicas difunden sus resultados de manera totalmente abierta y gratuita, sin restricciones por patentes ni secretos industriales.",
+            correct: false,
+            explanation: "INCORRECTA: Citando a Bunge (1985), el Apunte 2 (p. 8) explica que las comunidades tecnológicas no son tan abiertas como las científicas porque las patentes y los secretos industriales o militares restringen la difusión."
+          }
+        ]
+      },
+      {
+        id: "q6",
+        points: 1,
+        title: "6. Sobre la dinámica del cambio tecnológico, los modelos explicativos y la investigación y desarrollo (I+D):",
+        options: [
+          {
+            id: "a",
+            text: "El cambio tecnológico sigue una trayectoria lineal única («tren del progreso») donde siempre prevalece la opción técnicamente más eficiente por encima de factores económicos.",
+            correct: false,
+            explanation: "INCORRECTA: El Apunte 2 (p. 12) refuta la metáfora del «tren del progreso»: el desarrollo es multidireccional y zigzagueante (ej. la heladera eléctrica desplazó a la de gas por el tendido de redes eléctricas y costos, no por superioridad técnica aislada)."
+          },
+          {
+            id: "b",
+            text: "El modelo de interacción supera los determinismos unicausales al concebir a la tecnología y la sociedad como espejos recíprocos en interrelación sistémica.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 2 (p. 14). Frente a los determinismos tecnológico, económico, político y cultural, el modelo de interacción sostiene que nuestras sociedades son tecnológicas tanto como nuestras tecnologías son sociales."
+          },
+          {
+            id: "c",
+            text: "Según Quintanilla, en los programas de I+D la evaluación interna (contexto científico-tecnológico) analiza factibilidad, eficiencia y fiabilidad, mientras que la evaluación externa (contexto social) analiza consecuencias e idoneidad.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 2 (p. 17). Quintanilla distingue exactamente esos dos contextos y criterios de evaluación en los programas de Investigación y Desarrollo."
+          },
+          {
+            id: "d",
+            text: "En los programas de I+D, la investigación básica persigue directamente un objetivo comercial inmediato, mientras que el desarrollo experimental se ocupa solo de teorías abstractas.",
+            correct: false,
+            explanation: "INCORRECTA: Invierte los subprocesos (Apunte 2, pp. 15-16). La investigación básica busca fundamentos teóricos sin objetivo comercial particular; la aplicada apunta a un fin comercial/práctico; y el desarrollo experimental valida prototipos."
+          }
+        ]
+      },
+      {
+        id: "q7",
+        points: 1,
+        title: "7. Respecto a invención e innovación, paradigmas tecno-económicos y responsabilidad política:",
+        options: [
+          {
+            id: "a",
+            text: "Toda invención técnicamente funcional constituye por sí misma una innovación tecnológica, aunque nunca llegue a comercializarse ni difundirse socialmente.",
+            correct: false,
+            explanation: "INCORRECTA: Apunte 2 (pp. 18-19). Una invención pasa a ser innovación recién cuando factores políticos, sociales y económicos posibilitan su producción, comercialización, uso y difusión exitosa."
+          },
+          {
+            id: "b",
+            text: "Un paradigma tecno-económico (Carlota Pérez) es una lógica colectiva compartida que fija el horizonte de posibilidades y la trayectoria esperada de las mejoras en un producto.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 2 (p. 20). El paradigma orienta qué mejoras se esperan en una tecnología (como el paso de celulares diminutos en los noventa a smartphones con pantallas y procesamiento)."
+          },
+          {
+            id: "c",
+            text: "En el paradigma digital analizado por Klaus Schwab, el «talentismo» refiere a la necesidad de contar con equipos dinámicos y talento humano calificado como principal factor competitivo.",
+            correct: true,
+            explanation: "CORRECTA: Apunte 2 (p. 23, Schwab, 2017). El talentismo desplaza al capital físico tradicional como recurso crítico de competitividad."
+          },
+          {
+            id: "d",
+            text: "El «sonambulismo tecnológico» (Langdon Winner) describe el ideal democrático en el cual los funcionarios delegan todas las decisiones públicas en algoritmos autónomos.",
+            correct: false,
+            explanation: "INCORRECTA: Es una crítica de Langdon Winner (Apunte 2, p. 25) hacia los funcionarios que toman decisiones tecnológicas «deambulando dormidos», sin el conocimiento suficiente sobre sus consecuencias."
+          }
+        ]
+      }
+    ];
+
+    const klimovskySteps = [
+      { id: "step4", correctOrder: 4, text: "Construcción de un modelo en escala o prototipo (máquina, grupo experimental, programa social en pequeña escala)." },
+      { id: "step1", correctOrder: 1, text: "Planteo de un problema práctico (o idea)." },
+      { id: "step6", correctOrder: 6, text: "Fabricación, producción, implementación, comercialización y evaluación de consecuencias." },
+      { id: "step3", correctOrder: 3, text: "Búsqueda de los «principios» (leyes o reglas) y datos necesarios para resolver el problema." },
+      { id: "step2", correctOrder: 2, text: "Diseño de la cosa, estado o proceso que tal vez resuelva el problema en alguna aproximación." },
+      { id: "step5", correctOrder: 5, text: "Pruebas y evaluación de factibilidad, fiabilidad y eficiencia (con revisión crítica del diseño o pruebas)." }
+    ];
+
+    function renderExam() {
+      const container = document.getElementById('examQuestionsContainer');
+      container.innerHTML = '';
+
+      mcQuestions.forEach(q => {
+        const correctCount = q.options.filter(o => o.correct).length;
+        const valPerCorrect = +(q.points / correctCount).toFixed(2);
+        const penaltyPerWrong = +(valPerCorrect * 0.5).toFixed(2);
+
+        const qCard = document.createElement('div');
+        qCard.id = `card-${q.id}`;
+        qCard.className = 'bg-paper-card dark:bg-paper-darkCard rounded-2xl border border-stone-300 dark:border-stone-800 p-6 sm:p-8 shadow-sm space-y-5';
+
+        let optionsHtml = q.options.map(opt => `
+          <label id="label-${q.id}-${opt.id}" class="flex items-start gap-3.5 p-4 rounded-xl border border-stone-200 dark:border-stone-700 hover:bg-paper-warm/60 dark:hover:bg-stone-800/70 cursor-pointer transition">
+            <input type="checkbox" name="${q.id}" value="${opt.id}" class="mt-1.5 w-4 h-4 rounded text-terracotta focus:ring-terracotta border-stone-400">
+            <div class="flex-1 text-base leading-relaxed">
+              <span class="font-bold text-stone-900 dark:text-stone-100 mr-1">${opt.id})</span>
+              <span class="text-stone-800 dark:text-stone-200">${opt.text}</span>
+              <div id="exp-${q.id}-${opt.id}" class="hidden mt-3 p-3.5 rounded-lg text-base leading-relaxed"></div>
+            </div>
+          </label>
+        `).join('');
+
+        qCard.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 dark:border-stone-800 pb-3">
+            <span class="font-mono text-base text-slateblue dark:text-blue-300">Opción múltiple (una o varias correctas)</span>
+            <span class="font-mono text-base px-3 py-1 rounded-lg bg-paper-warm dark:bg-paper-darkWarm text-stone-800 dark:text-stone-200">
+              Valor: ${q.points} pt • Correcta: +${valPerCorrect.toFixed(2)} | Incorrecta: -${penaltyPerWrong.toFixed(2)}
+            </span>
+          </div>
+          <h3 class="font-serif text-xl font-bold text-stone-900 dark:text-white leading-snug">${q.title}</h3>
+          <div class="space-y-3">
+            ${optionsHtml}
+          </div>
+          <div id="score-box-${q.id}" class="hidden text-base font-bold pt-2"></div>
+        `;
+        container.appendChild(qCard);
+      });
+
+      // Consigna 8: Ordenamiento de los 6 pasos del método tecnológico (3 puntos)
+      const orderCard = document.createElement('div');
+      orderCard.id = 'card-ordering';
+      orderCard.className = 'bg-paper-card dark:bg-paper-darkCard rounded-2xl border-2 border-slateblue/40 dark:border-blue-800/60 p-6 sm:p-8 shadow-sm space-y-5';
+
+      let stepsHtml = klimovskySteps.map(step => `
+        <div id="row-${step.id}" class="flex items-start sm:items-center gap-3.5 p-4 rounded-xl border border-stone-200 dark:border-stone-700 bg-paper-warm/40 dark:bg-paper-darkWarm/50">
+          <select id="select-${step.id}" aria-label="Orden del paso" class="w-16 px-2.5 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-paper-darkCard font-mono font-bold text-base text-center focus:ring-2 focus:ring-slateblue shrink-0">
+            <option value="">—</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+          <div class="flex-1 text-base text-stone-800 dark:text-stone-200 leading-relaxed">
+            ${step.text}
+            <div id="exp-${step.id}" class="hidden mt-2 text-base font-semibold"></div>
+          </div>
+        </div>
+      `).join('');
+
+      orderCard.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 dark:border-stone-800 pb-3">
+          <span class="font-mono text-base text-slateblue dark:text-blue-300">Ejercicio práctico • Método tecnológico (Gregorio Klimovsky)</span>
+          <span class="font-mono text-base px-3 py-1 rounded-lg bg-slateblue-light dark:bg-blue-950/50 text-slateblue dark:text-blue-200">
+            Valor: 3 puntos • Ubicación correcta: +0.50 | Incorrecta: -0.25
+          </span>
+        </div>
+        <h3 class="font-serif text-xl font-bold text-stone-900 dark:text-white leading-snug">
+          8. Ordená del 1 al 6 la secuencia lógica de los pasos del método tecnológico según los contextos de descubrimiento, justificación y aplicación:
+        </h3>
+        <div class="space-y-3">
+          ${stepsHtml}
+        </div>
+        <div id="score-box-ordering" class="hidden text-base font-bold pt-2"></div>
+      `;
+      container.appendChild(orderCard);
+    }
+
+    function gradeExam() {
+      let totalAdded = 0;
+      let totalSubtracted = 0;
+
+      mcQuestions.forEach(q => {
+        const correctCount = q.options.filter(o => o.correct).length;
+        const valPerCorrect = q.points / correctCount;
+        const penaltyPerWrong = valPerCorrect * 0.5;
+
+        let qAdded = 0;
+        let qSubtracted = 0;
+
+        q.options.forEach(opt => {
+          const checkbox = document.querySelector(`input[name="${q.id}"][value="${opt.id}"]`);
+          const label = document.getElementById(`label-${q.id}-${opt.id}`);
+          const expBox = document.getElementById(`exp-${q.id}-${opt.id}`);
+          const checked = checkbox.checked;
+
+          expBox.classList.remove('hidden');
+
+          label.classList.remove('border-emerald-600', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'border-rose-600', 'bg-rose-50/70', 'dark:bg-rose-950/30', 'border-amber-500', 'bg-amber-50/60', 'dark:bg-amber-950/20');
+
+          if (checked && opt.correct) {
+            qAdded += valPerCorrect;
+            label.classList.add('border-emerald-600', 'bg-emerald-50/70', 'dark:bg-emerald-950/30');
+            expBox.className = 'mt-3 p-3.5 rounded-lg text-base leading-relaxed bg-emerald-100/90 dark:bg-emerald-900/50 text-emerald-950 dark:text-emerald-100 font-medium';
+            expBox.textContent = opt.explanation;
+          } else if (checked && !opt.correct) {
+            qSubtracted += penaltyPerWrong;
+            label.classList.add('border-rose-600', 'bg-rose-50/70', 'dark:bg-rose-950/30');
+            expBox.className = 'mt-3 p-3.5 rounded-lg text-base leading-relaxed bg-rose-100/90 dark:bg-rose-900/50 text-rose-950 dark:text-rose-100 font-medium';
+            expBox.textContent = opt.explanation;
+          } else if (!checked && opt.correct) {
+            label.classList.add('border-amber-500', 'bg-amber-50/60', 'dark:bg-amber-950/20');
+            expBox.className = 'mt-3 p-3.5 rounded-lg text-base leading-relaxed bg-amber-100/90 dark:bg-amber-900/40 text-amber-950 dark:text-amber-100';
+            expBox.textContent = 'No la marcaste (no resta puntaje, pero era verdadera): ' + opt.explanation;
+          } else {
+            expBox.className = 'mt-3 p-3.5 rounded-lg text-base leading-relaxed bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300';
+            expBox.textContent = 'Bien evitada: ' + opt.explanation;
+          }
+        });
+
+        totalAdded += qAdded;
+        totalSubtracted += qSubtracted;
+
+        const qScoreBox = document.getElementById(`score-box-${q.id}`);
+        qScoreBox.classList.remove('hidden');
+        qScoreBox.innerHTML = `<span class="text-emerald-700 dark:text-emerald-400">Puntaje sumado: +${qAdded.toFixed(2)}</span> | <span class="text-rose-700 dark:text-rose-400">Puntaje restado: -${qSubtracted.toFixed(2)}</span>`;
+      });
+
+      let ordAdded = 0;
+      let ordSubtracted = 0;
+      const contextNames = {
+        1: "1° (Contexto de descubrimiento: planteo del problema práctico)",
+        2: "2° (Contexto de descubrimiento: diseño aproximado de la cosa, estado o proceso)",
+        3: "3° (Contexto de descubrimiento: búsqueda de principios y datos)",
+        4: "4° (Contexto de justificación: construcción de modelo en escala o prototipo)",
+        5: "5° (Contexto de justificación: pruebas de factibilidad, fiabilidad y eficiencia)",
+        6: "6° (Contexto de aplicación: fabricación, comercialización y evaluación)"
+      };
+
+      klimovskySteps.forEach(step => {
+        const select = document.getElementById(`select-${step.id}`);
+        const row = document.getElementById(`row-${step.id}`);
+        const exp = document.getElementById(`exp-${step.id}`);
+        const val = parseInt(select.value, 10);
+
+        row.classList.remove('border-emerald-600', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'border-rose-600', 'bg-rose-50/70', 'dark:bg-rose-950/30');
+        exp.classList.remove('hidden');
+
+        if (!isNaN(val)) {
+          if (val === step.correctOrder) {
+            ordAdded += 0.50;
+            row.classList.add('border-emerald-600', 'bg-emerald-50/70', 'dark:bg-emerald-950/30');
+            exp.className = 'mt-2 text-base font-semibold text-emerald-800 dark:text-emerald-300';
+            exp.textContent = `Correcto (+0.50 pts) — Posición ${contextNames[step.correctOrder]}`;
+          } else {
+            ordSubtracted += 0.25;
+            row.classList.add('border-rose-600', 'bg-rose-50/70', 'dark:bg-rose-950/30');
+            exp.className = 'mt-2 text-base font-semibold text-rose-800 dark:text-rose-300';
+            exp.textContent = `Incorrecto (-0.25 pts): elegiste ${val}°, pero su posición correcta es ${contextNames[step.correctOrder]}`;
+          }
+        } else {
+          exp.className = 'mt-2 text-base font-medium text-amber-800 dark:text-amber-300';
+          exp.textContent = `Sin responder (0 pts). Posición correcta: ${contextNames[step.correctOrder]}`;
+        }
+      });
+
+      totalAdded += ordAdded;
+      totalSubtracted += ordSubtracted;
+
+      const ordScoreBox = document.getElementById('score-box-ordering');
+      ordScoreBox.classList.remove('hidden');
+      ordScoreBox.innerHTML = `<span class="text-emerald-700 dark:text-emerald-400">Puntaje sumado: +${ordAdded.toFixed(2)}</span> | <span class="text-rose-700 dark:text-rose-400">Puntaje restado: -${ordSubtracted.toFixed(2)}</span>`;
+
+      const rawFinal = totalAdded - totalSubtracted;
+      const finalScore = Math.max(0, rawFinal);
+      const passed = finalScore >= 6;
+
+      const banner = document.getElementById('examResultsBanner');
+      banner.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-600', 'dark:bg-emerald-950/40', 'bg-rose-50', 'border-rose-600', 'dark:bg-rose-950/40');
+      if (passed) {
+        banner.classList.add('bg-emerald-50', 'border-emerald-600', 'dark:bg-emerald-950/40');
+      } else {
+        banner.classList.add('bg-rose-50', 'border-rose-600', 'dark:bg-rose-950/40');
+      }
+
+      banner.innerHTML = `
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="space-y-2">
+            <p class="font-mono text-base font-semibold ${passed ? 'text-emerald-800 dark:text-emerald-300' : 'text-rose-800 dark:text-rose-300'}">
+              ${passed ? 'Aprobado — Buen dominio de ambos apuntes' : 'Desaprobado — Revisá las explicaciones debajo de cada opción'}
+            </p>
+            <h3 class="font-serif text-3xl font-bold text-stone-900 dark:text-white">
+              Nota final: ${finalScore.toFixed(2)} / 10.00
+            </h3>
+            <p class="text-base text-stone-700 dark:text-stone-300 leading-relaxed">
+              Planilla de cátedra: <strong>Total suma: +${totalAdded.toFixed(2)}</strong> | <strong>Total resta: -${totalSubtracted.toFixed(2)}</strong>. Recordá que cada opción incorrecta marcada descuenta el 50 % de una correcta.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3 text-center shrink-0">
+            <div class="px-5 py-3 rounded-xl bg-white dark:bg-paper-darkCard border border-stone-300 dark:border-stone-700">
+              <div class="text-base text-stone-600 dark:text-stone-400">Suma</div>
+              <div class="font-mono text-xl font-bold text-emerald-700 dark:text-emerald-400">+${totalAdded.toFixed(2)}</div>
+            </div>
+            <div class="px-5 py-3 rounded-xl bg-white dark:bg-paper-darkCard border border-stone-300 dark:border-stone-700">
+              <div class="text-base text-stone-600 dark:text-stone-400">Resta</div>
+              <div class="font-mono text-xl font-bold text-rose-700 dark:text-rose-400">-${totalSubtracted.toFixed(2)}</div>
+            </div>
+            <div class="px-5 py-3 rounded-xl bg-white dark:bg-paper-darkCard border border-stone-300 dark:border-stone-700">
+              <div class="text-base text-stone-600 dark:text-stone-400">Final</div>
+              <div class="font-mono text-xl font-bold text-slateblue dark:text-blue-300">${finalScore.toFixed(2)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetExam() {
+      document.getElementById('examResultsBanner').classList.add('hidden');
+      renderExam();
+      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      switchTab('lectura');
+      renderAuthors('all');
+      renderFlashcards();
+      renderExam();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
